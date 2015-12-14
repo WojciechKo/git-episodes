@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Git Episode 2: Lokalne Wersjonowanie</title>
+
+		<meta name="description" content="Przyblirzenie podstaw systemu kontroli wersji git">
+		<meta name="author" content="Wojciech Korzeniowski">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h2>Git Episode 3</h2>
+					<h2>Cofanie zmian</h2>
+				</section>
+				
+				<section>
+					<section>
+						<h2>HEAD</h2>
+					</section>
+					
+					<section>
+						<h2>HEAD~</h2>
+						<h2>HEAD~1</h2>
+					</section>
+					
+					<section>
+						<h2>HEAD~~</h2>
+						<h2>HEAD~2</h2>
+					</section>
+					
+					<section>
+						<h2>HEAD~~~</h2>
+						<h2>HEAD~3</h2>
+					</section>
+				</section>
+				
+				<section>			
+					<section data-markdown>
+						<script type="text/template">
+							## git reset
+							### Get files from history
+						</script>
+					</section>
+					
+					<section data-markdown>
+						<script type="text/template">
+							## git reset --soft <commit>
+							### From history to staged
+							```
+							$ git reset --soft HEAD~
+							$ git status
+							On branch test
+							Changes to be committed:
+							  (use "git reset HEAD <file>..." to unstage)
+
+									modified:   example.rb
+							```
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							## git reset [--mixed] <commit>
+							### From history to working directory
+							```
+							$ git reset HEAD~
+							Unstaged changes after reset:
+							M       example.rb
+
+							$ git status
+							On branch master
+							Changes not staged for commit:
+							  (use "git add/rm <file>..." to update what will be committed)
+							  (use "git checkout -- <file>..." to discard changes in working directory)
+
+									modified:   example.rb
+
+							no changes added to commit (use "git add" and/or "git commit -a")
+
+							```
+						</script>
+					</section>
+					
+					<section data-markdown>
+						<script type="text/template">
+							## git reset --hard <commit>
+							### From history to staged
+							```
+							$ git log --oneline -3
+							8486906 Refactor example.rb
+							9e666d6 Commit before refactor example.rb
+							cef33e0 Initial commit
+
+							$ git reset --hard HEAD~
+							HEAD is now at 9e666d6 Commit before refactor example.rb
+
+							$ git status
+							On branch master
+							nothing to commit, working directory clean
+
+							$ git log --oneline -3
+							9e666d6 Commit before refactor example.rb
+							cef33e0 Initial commit
+							```
+						</script>
+					</section>
+				</section>
+				
+				<section>			
+					<section data-markdown>
+						<script type="text/template">
+							## git reset HEAD <file>
+							### Unstaging a Staged File
+						</script>
+					</section>
+					
+					<section data-markdown>
+						<script type="text/template">
+							## git reset HEAD <file>
+							### Unstaging a Staged File
+							```
+							$ git add .
+							$ git status
+							$ git reset HEAD .secrets
+							$ git status
+							```
+						</script>
+					</section>
+				</section>
+				
+				<section>			
+					<section data-markdown>
+						<script type="text/template">
+							## git commit --amend
+							### Modify last commit
+						</script>
+					</section>
+					
+					<section data-markdown>
+						<script type="text/template">
+							## git commit --amend
+							### Add forgotten file to last commit
+							```
+							$ git commit -m"User can become admin"
+							$ echo '<sample_test_case>' > admin_user_spec.rb
+							$ git add admin_user_spec.rb
+							$ git commit --amend
+							```
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type="text/template">
+							## git commit --amend
+							### Add forgotten file to last commit
+							```
+							$ git commit -m"User can become admin"
+							$ git log -2     # show last 2 commits
+							$ echo '<sample_test_case>' > admin_user_spec.rb
+							$ git add admin_user_spec.rb
+							$ git status
+							$ git commit --amend
+							$ git log -2     # show last 2 commits
+							```
+						</script>
+					</section>
+				</section>
+
+				<section>
+					<h2>Dzięki!</h2>
+					<h4><a href="episode-4.html">Episode 4: Branching</a>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
